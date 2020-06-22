@@ -1,0 +1,49 @@
+{
+  "name": "vue-tree-wz",
+  "version": "1.0.0",
+  "description": "Flexible Vue Tree Component",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WANZARGEN/vue-tree-wz.git"
+  },
+  "keywords": [
+    "vue",
+    "tree",
+    "vue.js",
+    "wanzargen"
+  ],
+  "author": "WANZARGEN<wanjin911003@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/WANZARGEN/vue-tree-wz/issues"
+  },
+  "homepage": "https://github.com/WANZARGEN/vue-tree-wz#readme",
+  "dependencies": {
+    "@vue/composition-api": "^0.6.6",
+    "lodash": "^4.17.15",
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.156",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "@typescript-eslint/parser": "^2.30.0",
+    "@vue/cli-plugin-babel": "^4.1.2",
+    "@vue/cli-plugin-eslint": "^4.1.2",
+    "@vue/cli-plugin-typescript": "^4.1.2",
+    "@vue/cli-service": "^3.5.3",
+    "@vue/eslint-config-airbnb": "^4.0.0",
+    "@vue/eslint-config-typescript": "^4.0.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.2.0",
+    "eslint-import-resolver-typescript": "^2.0.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2",
+    "typescript": "^3.9.5"
+  }
+}

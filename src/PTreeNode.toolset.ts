@@ -1,14 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any,no-empty-function */
-import {
-    HelperToolSet,
-    initReactive, optionalType, StateToolSet, SyncStateToolSet,
-} from '@/lib/toolset';
 import { UnwrapRef } from '@vue/composition-api/dist/reactivity';
 import {
     computed, reactive,
 } from '@vue/composition-api';
-import { findIndex } from 'lodash';
-import { ComponentInstance } from '@vue/composition-api/dist/component';
+import {assign} from 'lodash';
+
+export type optionalType<T1, T2> = T1 | T1 & T2
+
+export function initReactive<T>(lazy: boolean, ...args: any[]): T {
+    if (lazy) {
+        return null as unknown as T;
+    }
+    return reactive(assign({}, ...args));
+}
 
 export interface TreeNodeStateType<T=any, S extends BaseNodeStateType = BaseNodeStateType> {
     level: number;
@@ -64,8 +68,6 @@ export interface TreeItem<T=any, S extends BaseNodeStateType = BaseNodeStateType
     el?: HTMLElement;
 }
 
-@StateToolSet<TreeNodeStateType>()
-@SyncStateToolSet<TreeNode>()
 export class TreeNodeState<
     data=any, state extends BaseNodeStateType = BaseNodeStateType,
     initData=any, initState extends TreeNodeStateType<data, state> = TreeNodeStateType<data, state>,
@@ -117,7 +119,6 @@ export interface TreeNodeEventListeners<T=any, S extends BaseNodeStateType = Bas
 }
 
 
-@HelperToolSet()
 export class TreeNodeToolSet<
     data=any, state extends BaseNodeStateType = BaseNodeStateType,
     initData=any, initSyncData=any
@@ -171,11 +172,6 @@ export class TreeNodeToolSet<
         }) as TreeNodeMetaState;
         _this.setSelectedNodes = (item: TreeItem): void => {
             // TODO: multi select case
-            // if (_this.isMultiSelect) {
-            // const idx = findIndex(_this.metaState.selectedNodes, (d: TreeItem) => d.key === node.key && d.level === node.level);
-            // if (idx === -1) _this.metaState.selectedNodes.push(node);
-            // else _this.metaState.selectedNodes.splice(idx, 1);
-            // }
 
             if (_this.metaState.firstSelectedNode) {
                 _this.setNodeState(_this.metaState.firstSelectedNode, { selected: false });

@@ -11,7 +11,7 @@ import PI from '@/components/atoms/icons/PI.vue';
 import { clone } from 'lodash';
 import PTreeNode from './PTreeNode.vue';
 import { treeNodeProps, TreeNodeToolSet } from './PTreeNode.toolset';
-import md from './PTreeNode.md';
+import md from './README.md';
 import style from './PTreeNodes.stories.scss';
 
 export default {

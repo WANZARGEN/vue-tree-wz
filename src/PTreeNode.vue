@@ -22,13 +22,7 @@
                                     <slot v-if="$scopedSlots[`toggle-${level}`] || $scopedSlots[`toggle`]"
                                           :name="`toggle-${level}`" v-bind="slotBind"
                                     >
-                                        <slot name="toggle" v-bind="slotBind">
-                                            <p-i v-if="children"
-                                                 :name="state.expanded ? 'ic_tree_arrow--opened' : 'ic_tree_arrow'"
-                                                 :width="toggleSize" :height="toggleSize"
-                                                 color="inherit transparent"
-                                            />
-                                        </slot>
+                                        <slot name="toggle" v-bind="slotBind" />
                                     </slot>
                                 </span>
                                 <span v-if="$scopedSlots[`icon-${level}`] || $scopedSlots[`icon`]"
@@ -80,21 +74,42 @@
 </template>
 
 <script lang="ts">
-import { TreeNodeProps, treeNodeProps } from '@/components/molecules/tree/PTreeNode.toolset';
 import {
-    computed, getCurrentInstance, onMounted, reactive, ref,
+    computed, getCurrentInstance, onMounted, reactive, Ref, ref,
 } from '@vue/composition-api';
-import PI from '@/components/atoms/icons/PI.vue';
-import { makeProxy } from '@/lib/compostion-util';
 import {
     forEach,
 } from 'lodash';
 import { ComponentInstance } from '@vue/composition-api/dist/component';
+import { TreeNodeProps, treeNodeProps } from './PTreeNode.toolset';
 
-const PTreeNode = import('@/components/molecules/tree/PTreeNode.vue');
+const makeProxy = <T extends any>(name: string, props: any = null, emit: any = null): Ref<T> => {
+    let _props = props;
+    let _emit = emit;
+    if (!_props && !_emit) {
+        const vm = getCurrentInstance();
+        if (vm) {
+            _props = vm.$props;
+            _emit = vm.$listeners[`update:${name}`];
+        } else {
+            console.error('unsupported get current instance method');
+        }
+    }
+    return computed({
+        get: () => _props[name],
+        set: (val) => {
+            if (emit) {
+                emit(`update:${name}`, val);
+            } else {
+                _emit(val);
+            }
+        },
+    });
+};
+const PTreeNode = import('@/PTreeNode.vue');
 export default {
     name: 'PTreeNode',
-    components: { PI, PTreeNode },
+    components: { PTreeNode },
     props: treeNodeProps,
     setup(props: TreeNodeProps, { emit }) {
         const vm: ComponentInstance = getCurrentInstance() as ComponentInstance;
@@ -160,30 +175,30 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
-.basic {
-    @apply h-10 rounded-sm text-sm text-black cursor-pointer;
-    .node {
-        @apply h-full w-full inline-flex items-center;
-    }
-    .toggle {
-        @apply cursor-pointer;
-        color: inherit;
-    }
-    .icon {
-        @apply flex-shrink-0 flex-grow-0;
-    }
-    .data {
-        @apply leading-normal truncate;
-    }
-    .right-extra {
-        @apply flex-grow;
-    }
-    &:hover {
-        @apply text-secondary bg-secondary2;
-    }
-    &.selected {
-        @apply bg-blue-200 border border-secondary;
-    }
-}
+<style lang="scss" scoped>
+/*.basic {*/
+/*    @apply h-10 rounded-sm text-sm text-black cursor-pointer;*/
+/*    .node {*/
+/*        @apply h-full w-full inline-flex items-center;*/
+/*    }*/
+/*    .toggle {*/
+/*        @apply cursor-pointer;*/
+/*        color: inherit;*/
+/*    }*/
+/*    .icon {*/
+/*        @apply flex-shrink-0 flex-grow-0;*/
+/*    }*/
+/*    .data {*/
+/*        @apply leading-normal truncate;*/
+/*    }*/
+/*    .right-extra {*/
+/*        @apply flex-grow;*/
+/*    }*/
+/*    &:hover {*/
+/*        @apply text-secondary bg-secondary2;*/
+/*    }*/
+/*    &.selected {*/
+/*        @apply bg-blue-200 border border-secondary;*/
+/*    }*/
+/*}*/
 </style>
